@@ -84,3 +84,49 @@ async def handle_text(update: Update, context: ContextTypes.DEFAULT_TYPE):
         user_input=user_text,
         ai_response=ai_answer
     )
+
+
+async def handle_photo(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Обработка фото"""
+    user = update.effective_user
+    photo_file = await update.message.photo[-1].get_file()
+    with tempfile.NamedTemporaryFile(delete=False, suffix=".jpg") as tmp_file:
+        await photo_file.download_to_drive(tmp_file.name)
+        image_path = tmp_file.name
+
+    try:
+        image = Image.open(image_path)
+        logger.info(f"Фото загружено: {image_path}")
+
+        prompt = "Опиши, что изображено на фото, детально."
+        with open(image_path, "rb") as img_file:
+            import base64
+            encoded_image = base64.b64encode(img_file.read()).decode('utf-8')
+
+        response = requests.post(
+            OLLAMA_API,
+            json={
+                "model": MODEL,
+                "prompt": prompt,
+                "images": [encoded_image],
+                "stream": False
+            }
+        )
+        response.raise_for_status()
+        ai_answer = response.json()["response"]
+    except Exception as e:
+        ai_answer = f"Ошибка при анализе фото: {e}"
+        logger.error(f"Ошибка при обработке фото: {e}")
+    finally:
+        os.unlink(image_path)
+
+    await update.message.reply_text(ai_answer)
+
+    # Сохраняем в БД
+    save_message(
+        user_id=user.id,
+        username=user.username,
+        msg_type="photo",
+        user_input="Пользователь отправил фото",
+        ai_response=ai_answer
+    )
