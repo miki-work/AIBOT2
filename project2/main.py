@@ -75,3 +75,12 @@ async def handle_text(update: Update, context: ContextTypes.DEFAULT_TYPE):
         logger.error(f"Ошибка при генерации текста: {e}")
 
     await update.message.reply_text(ai_answer)
+
+# Сохраняем в БД
+    save_message(
+        user_id=user.id,
+        username=user.username,
+        msg_type="text",
+        user_input=user_text,
+        ai_response=ai_answer
+    )
