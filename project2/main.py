@@ -5,7 +5,8 @@ import tempfile
 from telegram import Update
 from telegram.ext import Application, CommandHandler, MessageHandler, filters, ContextTypes
 import logging
-
+import sqlite3
+from datetime import datetime
 
 # Настройка логирования
 logging.basicConfig(level=logging.INFO)
