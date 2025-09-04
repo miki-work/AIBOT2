@@ -130,3 +130,19 @@ async def handle_photo(update: Update, context: ContextTypes.DEFAULT_TYPE):
         user_input="Пользователь отправил фото",
         ai_response=ai_answer
     )
+
+def main():
+    """Запуск бота"""
+    init_db()  # Инициализация БД при старте
+
+    app = Application.builder().token(TOKEN).build()
+
+    app.add_handler(CommandHandler("start", start))
+    app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_text))
+    app.add_handler(MessageHandler(filters.PHOTO, handle_photo))
+
+    logger.info("Бот запущен. Ожидание сообщений...")
+    app.run_polling()
+
+if __name__ == "__main__":
+    main()
