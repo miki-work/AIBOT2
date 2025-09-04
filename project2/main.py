@@ -22,3 +22,19 @@ MODEL = "llava"
 
 # Путь к базе данны
 DB_PATH = "bot_data.db"
+
+def init_db():
+    """Создаёт таблицу для истории диалогов"""
+    with sqlite3.connect(DB_PATH) as conn:
+        conn.execute("""
+            CREATE TABLE IF NOT EXISTS messages (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                user_id INTEGER,
+                username TEXT,
+                message_type TEXT,  -- 'text' или 'photo'
+                user_input TEXT,
+                ai_response TEXT,
+                timestamp TEXT
+            )
+        """)
+    logger.info("База данных инициализирована.")
