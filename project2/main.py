@@ -38,3 +38,12 @@ def init_db():
             )
         """)
     logger.info("База данных инициализирована.")
+
+def save_message(user_id: int, username: str, msg_type: str, user_input: str, ai_response: str):
+    """Сохраняет сообщение и ответ ИИ в базу"""
+    with sqlite3.connect(DB_PATH) as conn:
+        conn.execute(
+            "INSERT INTO messages (user_id, username, message_type, user_input, ai_response, timestamp) VALUES (?, ?, ?, ?, ?, ?)",
+            (user_id, username, msg_type, user_input, ai_response, datetime.now().isoformat())
+        )
+    logger.info(f"Сообщение от {username} сохранено в БД.")
