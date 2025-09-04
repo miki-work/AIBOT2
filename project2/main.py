@@ -47,3 +47,9 @@ def save_message(user_id: int, username: str, msg_type: str, user_input: str, ai
             (user_id, username, msg_type, user_input, ai_response, datetime.now().isoformat())
         )
     logger.info(f"Сообщение от {username} сохранено в БД.")
+
+async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Приветствие"""
+    await update.message.reply_text("Привет! Отправь текст или фото — я отвечу. История сохраняется!")
+    logger.info(f"Пользователь {update.effective_user.username} запустил бота.")
+
