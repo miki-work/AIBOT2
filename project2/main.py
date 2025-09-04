@@ -19,3 +19,6 @@ if not TOKEN:
 # Ollama API
 OLLAMA_API = "http://host.docker.internal:11434/api/generate"
 MODEL = "llava"
+
+# Путь к базе данны
+DB_PATH = "bot_data.db"
