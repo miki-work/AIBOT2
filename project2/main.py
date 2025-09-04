@@ -53,3 +53,25 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text("Привет! Отправь текст или фото — я отвечу. История сохраняется!")
     logger.info(f"Пользователь {update.effective_user.username} запустил бота.")
 
+async def handle_text(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Обработка текста"""
+    user = update.effective_user
+    user_text = update.message.text
+    logger.info(f"Получен текст от {user.username}: {user_text}")
+
+    try:
+        response = requests.post(
+            OLLAMA_API,
+            json={
+                "model": MODEL,
+                "prompt": user_text,
+                "stream": False
+            }
+        )
+        response.raise_for_status()
+        ai_answer = response.json()["response"]
+    except Exception as e:
+        ai_answer = f"Ошибка ИИ: {e}"
+        logger.error(f"Ошибка при генерации текста: {e}")
+
+    await update.message.reply_text(ai_answer)
