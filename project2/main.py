@@ -7,6 +7,9 @@ from telegram.ext import Application, CommandHandler, MessageHandler, filters, C
 import logging
 import sqlite3
 from datetime import datetime
+from dotenv import load_dotenv
+
+load_dotenv()  
 
 # Настройка логирования
 logging.basicConfig(level=logging.INFO)
