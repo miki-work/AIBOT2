@@ -1,5 +1,4 @@
-python-telegram-bot==20.8
-requests
-Pillow
-python-dotenv
-EOL
+python-telegram-bot==20.8 #эта библиотека нужна для создания телеграмм-ботов на питоне
+requests #благодаря ей я могу отправлять запрос ИИ
+Pillow #нужна для обработки фото
+python-dotenv #для чткния токена из телеги

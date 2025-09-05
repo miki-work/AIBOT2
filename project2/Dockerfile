@@ -1,13 +1,13 @@
 # Dockerfile
-FROM python:3.11-slim
+FROM python:3.11-slim #используем слим версию чтобы образ был маленьким и быстрым, но с нужной версией питона
 
-WORKDIR /app
+WORKDIR /app #устанавливает рабочую директорию внутри контейнера и все дальнейшие команды будут выполняться в апп
 
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+COPY requirements.txt . #копируем чтобы установить нужные библиотеки
+RUN pip install --no-cache-dir -r requirements.txt #флаг --no-cache-dir — чтобы образ был меньше и без этого pip занимает лтщнее место
 
 # Копируем .env, main.py и запускаем
 COPY .env .
 COPY main.py .
 
-CMD ["python", "main.py"]
+CMD ["python", "main.py"] #просто команда запускающая контейнер
