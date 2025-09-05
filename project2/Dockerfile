@@ -11,4 +11,3 @@ COPY .env .
 COPY main.py .
 
 CMD ["python", "main.py"]
-EOF
